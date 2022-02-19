@@ -1,0 +1,239 @@
+﻿<pu:WindowX x:Class="BsbPcbaTestSpace.OptionsWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+        xmlns:local="clr-namespace:BsbPcbaTestSpace"
+        mc:Ignorable="d"
+        Title="OptionsWin" Height="660" Width="700" ResizeMode="NoResize" Icon="Icon/parmseting.png" >
+    <Window.Resources>
+        <Style x:Key="CompanyNameStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Grid Height="80" x:Name="grid">
+                            <Border Name="border" >
+                                <StackPanel Orientation="Vertical" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Height="30" Content="公司名称：" FontSize="15" Margin="5 5 0 0"></Label>
+                                        <TextBox Height="30" Width="275" FontSize="15" Text="{Binding company,UpdateSourceTrigger=PropertyChanged}"
+                                     Foreground="#808080" Margin="5 5 0 0"></TextBox>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Height="30" Content="所在地：" FontSize="15" Margin="21 5 0 0"></Label>
+                                        <TextBox Height="30" Width="275" FontSize="15" Text="{Binding local,UpdateSourceTrigger=PropertyChanged}" 
+                                     Foreground="#808080" Margin="5 5 0 0"></TextBox>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="border" Property="Background" Value="Gold"/>
+                            </Trigger>
+                            <Trigger Property="Selector.IsSelected" Value="true">
+                                <Setter TargetName="border" Property="Background" Value="Gold"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ProductStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Grid Height="80" x:Name="grid">
+                            <Border Name="border" >
+                                <StackPanel Orientation="Vertical" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Height="30" Content="产品名称：" FontSize="15" Margin="5 5 0 0"></Label>
+                                        <TextBox Height="30" Width="275" FontSize="15" Text="{Binding namedescribe ,UpdateSourceTrigger=PropertyChanged}"
+                                     Foreground="#808080" Margin="5 5 0 0"></TextBox>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Height="30" Content="描述：" FontSize="15" Margin="35 5 0 0"></Label>
+                                        <TextBox Height="30" Width="275" FontSize="15" Text="{Binding name,UpdateSourceTrigger=PropertyChanged}" 
+                                     Foreground="#808080" Margin="5 5 0 0"></TextBox>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="border" Property="Background" Value="Gold"/>
+                            </Trigger>
+                            <Trigger Property="Selector.IsSelected" Value="true">
+                                <Setter TargetName="border" Property="Background" Value="Gold"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0"  BorderThickness="0,1,0,1" BorderBrush="Black">
+            <Canvas Background="White">
+                <Image Canvas.Left="0" Canvas.Top="1"  Stretch="Uniform" Height="55" Source="Images/BSB.png"></Image>
+            </Canvas>
+        </Border>
+        <GroupBox Grid.Column="0" Grid.Row="1" Header="项目" pu:GroupBoxHelper.CornerRadius="10"  
+                  pu:GroupBoxHelper.Icon="Icon/parmseting.png" pu:IconHelper.Width="30"  pu:GroupBoxHelper.IsSplitLineVisible="True" 
+                  Margin="5,5,5,0"  pu:GroupBoxHelper.HeaderForeground="Black">
+
+            <TreeView pu:TreeViewHelper.SelectedBackground="Goldenrod" pu:TreeViewHelper.TreeViewStyle="Standard"
+                pu:TreeViewHelper.ItemHeight="NaN" Name="ConfigItemTreeView" pu:TreeViewHelper.ExpandMode="SingleClick"
+                pu:TreeViewHelper.SelectMode="Any" pu:TreeViewHelper.SelectedForeground="Blue" PreviewMouseUp="ConfigItemTreeView_PreviewMouseUp">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type local:DataTreeViewNodeItem}" ItemsSource="{Binding Path=Children}">
+                        <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+                            <Image Source="{Binding Icon}" Width="20"/>
+                            <TextBlock Text="{Binding DisplayName}"/>
+                            <Image Source="{Binding EditIcon}" Width="20"/>
+                            <StackPanel.ToolTip>
+                                <TextBlock Text="{Binding Name}"/>  
+                            </StackPanel.ToolTip>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+        </GroupBox>
+        <GroupBox Grid.Column="1" Grid.Row="1" Header="测试参数设置" pu:GroupBoxHelper.CornerRadius="10" 
+                  pu:GroupBoxHelper.Icon="Icon/edit.png" pu:IconHelper.Width="30"  pu:GroupBoxHelper.IsSplitLineVisible="True" Margin="10,5,10,0"
+                  pu:GroupBoxHelper.HeaderForeground="Black" Visibility="Visible" Name="TestSetingGb">
+            <StackPanel Margin="0,50" Orientation="Vertical">
+                <Canvas Margin="0,0,0,0">
+                    <Label Content="串口设置:" Canvas.Bottom="0" Canvas.Left="47" FontSize="16" FontFamily="YouYuan" ></Label>
+                    <ComboBox  Canvas.Left="131" Canvas.Bottom="0" x:Name="PortSetComboBox" Height="32" Canvas.Right="0"
+                  DisplayMemberPath="Name" SelectedValuePath="ID"  Width="220" FontSize="16" SelectedIndex="0"
+                              pu:ComboBoxHelper.Watermark="请选择串口..." pu:ComboBoxHelper.CornerRadius="5" SelectionChanged="PortSetComboBox_SelectionChanged"></ComboBox>
+                </Canvas>
+                <Canvas Margin="18,15,0,0">
+                    <TextBox  Text="{Binding MaxNumOfBoard,UpdateSourceTrigger=PropertyChanged}" Height="32" Name="TestTimeOutTexBox" Width="330" Canvas.Top="0"
+                              FontSize="16" pu:TextBoxHelper.CornerRadius="5" pu:TextBoxHelper.Watermark="请输入测试超时时间" 
+                              pu:TextBoxHelper.FocusedBorderBrush="Green" pu:TextBoxHelper.Header="测试超时时间："/>
+                    <Label Content="ms" Canvas.Left="330" Canvas.Top="0"  FontSize="15" Foreground="Gray" RenderTransformOrigin="3.414,1.902"></Label>
+                </Canvas>
+                <Canvas Margin="0,10,0,0" HorizontalAlignment="Left" Width="415">
+                    <TextBox Canvas.Left="50" Canvas.Top="40" Text="{Binding MinNumOfSalve, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="32" 
+                             Name="SlaveAddressTextBox" Width="295" FontSize="16" pu:TextBoxHelper.CornerRadius="5" 
+                             pu:TextBoxHelper.Watermark="请输入从机地址" pu:TextBoxHelper.FocusedBorderBrush="Green"
+                             pu:TextBoxHelper.Header="从机地址："/>
+                </Canvas>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Grid.Row="1" Header="数据库设置" pu:GroupBoxHelper.CornerRadius="10" Name="DBSetingGb"
+                  pu:GroupBoxHelper.Icon="Icon/edit.png" pu:IconHelper.Width="30"  pu:GroupBoxHelper.IsSplitLineVisible="True" Margin="10,5,10,0"
+                  pu:GroupBoxHelper.HeaderForeground="Black" Visibility="Hidden">
+            <StackPanel Margin="0,25" Orientation="Vertical">
+                <Canvas>
+                    <TextBox  Text="{Binding TestFixtureID,UpdateSourceTrigger=PropertyChanged}" Height="32" Width="330" Canvas.Top="0" Canvas.Left="22"
+                              FontSize="16" pu:TextBoxHelper.CornerRadius="5" pu:TextBoxHelper.Watermark="请输入测试治具编号" 
+                              pu:TextBoxHelper.FocusedBorderBrush="Green" pu:TextBoxHelper.Header="测试治具编号："/>
+                </Canvas>
+                <Canvas Margin="0,45,0,0">
+                    <TextBox  Text="{Binding CompanyName,UpdateSourceTrigger=PropertyChanged}" Height="32" Width="295" Canvas.Top="0" Canvas.Left="53"
+                              FontSize="16" pu:TextBoxHelper.CornerRadius="5" pu:TextBoxHelper.Watermark="请输入公司名称" 
+                              pu:TextBoxHelper.FocusedBorderBrush="Green" pu:TextBoxHelper.Header="公司名称："/>
+                </Canvas>
+                <Canvas Margin="0 0 0 0 ">
+                    <CheckBox IsChecked="{Binding IsSaveDataToSQL,UpdateSourceTrigger=PropertyChanged}" pu:CheckBoxHelper.CornerRadius="5" pu:CheckBoxHelper.Header="是否启用测试结果保存到数据库"
+                              Margin="60 50 0 0" FontSize="16"></CheckBox>
+                </Canvas>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Grid.Row="1" Header="公司名列表设置" pu:GroupBoxHelper.CornerRadius="10" Name="companyNameSetGb"
+                  pu:GroupBoxHelper.Icon="Icon/edit.png" pu:IconHelper.Width="30"  pu:GroupBoxHelper.IsSplitLineVisible="True" Margin="10,5,10,0"
+                  pu:GroupBoxHelper.HeaderForeground="Black" Visibility="Hidden">
+            <Canvas Grid.Column="1" Grid.Row="0">
+                <Label Content="公司名称" Height="40" Canvas.Left="20" Foreground="Black" FontSize="25" Canvas.Top="20" ></Label>
+                <Button  Width="30" Height="30" pu:ButtonHelper.ButtonStyle="Link" pu:ButtonHelper.CornerRadius="2" 
+                    Canvas.Right="35" Canvas.Top="80" pu:ButtonHelper.Icon="Icon/add.png" pu:ButtonHelper.ClickCoverOpacity="0.5"
+                    pu:ButtonHelper.HoverBrush="Green"  Name="addItemBtn" Click="AddItemBtn_Click" ToolTip="单击添加公司名称"
+                         pu:IconHelper.Width="35"></Button>
+                <Button  Width="30" Height="30" pu:ButtonHelper.ButtonStyle="Link" pu:ButtonHelper.CornerRadius="2" 
+                    Canvas.Right="35" Canvas.Top="140" pu:ButtonHelper.Icon="Icon/remove.png" pu:ButtonHelper.ClickCoverOpacity="0.5"
+                    pu:ButtonHelper.HoverBrush="Green"  Name="deleteItemBtn" Click="DeleteItemBtn_Click"  ToolTip="单击移除选中的公司名称"
+                         pu:IconHelper.Width="35"></Button>
+                <ListBox BorderThickness="1" ItemContainerStyle="{StaticResource CompanyNameStyle}" x:Name="companyNameList" BorderBrush="#eaeaeb"
+                    Canvas.Left="0" Canvas.Top="70" Background="Transparent" Width="386" Height="405"  Margin="5 5 0 0" 
+                         SelectionChanged="CompanyNameList_SelectionChanged" >
+                    <ListBox.Style>
+                        <Style TargetType="ListBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBox">
+                                        <Border x:Name="Bd"  BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                                            Padding="0">
+                                            <ScrollViewer Focusable="False">
+                                                <ItemsPresenter />
+                                            </ScrollViewer>
+                                        </Border>
+
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.Style>
+                </ListBox>
+            </Canvas>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Grid.Row="1" Header="产品名称列表" pu:GroupBoxHelper.CornerRadius="10" Name="productameSetGb"
+                  pu:GroupBoxHelper.Icon="Icon/edit.png" pu:IconHelper.Width="30"  pu:GroupBoxHelper.IsSplitLineVisible="True" Margin="10,5,10,0"
+                  pu:GroupBoxHelper.HeaderForeground="Black" Visibility="Hidden">
+            <Canvas Grid.Column="1" Grid.Row="0">
+                <Label Content="产品名称" Height="40" Canvas.Left="20" Foreground="Black" FontSize="25" Canvas.Top="20" ></Label>
+                <Button  Width="30" Height="30" pu:ButtonHelper.ButtonStyle="Link" pu:ButtonHelper.CornerRadius="2" 
+                    Canvas.Right="35" Canvas.Top="80" pu:ButtonHelper.Icon="Icon/add.png" pu:ButtonHelper.ClickCoverOpacity="0.5"
+                    pu:ButtonHelper.HoverBrush="Green"  Name="addProductBtn" ToolTip="单击添加产品名称"
+                         pu:IconHelper.Width="35" Click="AddProductBtn_Click"></Button>
+                <Button  Width="30" Height="30" pu:ButtonHelper.ButtonStyle="Link" pu:ButtonHelper.CornerRadius="2" 
+                    Canvas.Right="35" Canvas.Top="140" pu:ButtonHelper.Icon="Icon/remove.png" pu:ButtonHelper.ClickCoverOpacity="0.5"
+                    pu:ButtonHelper.HoverBrush="Green"  Name="deleteProductBtn"  ToolTip="单击移除选中的产品名称"
+                         pu:IconHelper.Width="35" Click="DeleteProductBtn_Click"></Button>
+                <ListBox BorderThickness="1" ItemContainerStyle="{StaticResource ProductStyle}" x:Name="productNameList" BorderBrush="#eaeaeb"
+                    Canvas.Left="0" Canvas.Top="70" Background="Transparent" Width="386" Height="405"  Margin="5 5 0 0" SelectionChanged="ProductNameList_SelectionChanged" >
+                    <ListBox.Style>
+                        <Style TargetType="ListBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBox">
+                                        <Border x:Name="Bd"  BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                                            Padding="0">
+                                            <ScrollViewer Focusable="False">
+                                                <ItemsPresenter />
+                                            </ScrollViewer>
+                                        </Border>
+
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.Style>
+                </ListBox>
+            </Canvas>
+        </GroupBox>
+        <Canvas Grid.Column="1" Grid.Row="2">
+            <Button Content="取消" Canvas.Right="12" Canvas.Bottom="10" Width="75" Height="26" pu:ButtonHelper.ClickStyle="Sink" 
+                   Foreground="White" pu:ButtonHelper.CornerRadius="5" pu:ButtonHelper.HoverBrush="Goldenrod" Click="Button_Click_1">
+            </Button>
+            <Button Content="确定" Canvas.Right="120" Canvas.Bottom="10" Width="75" Height="26" pu:ButtonHelper.ClickStyle="Sink" 
+                   Foreground="White" pu:ButtonHelper.CornerRadius="5" pu:ButtonHelper.HoverBrush="Goldenrod" Click="Button_Click">
+            </Button>
+        </Canvas>
+    </Grid>
+</pu:WindowX>

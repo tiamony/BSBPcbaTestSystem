@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1525
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BsbPcbaTestProMain", "TestPanuonUI\BsbPcbaTestProMain.csproj", "{D156351B-1249-4A14-A701-A2E6FA992867}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BSBPcbaTestProSetup", "BSBPcbaTestProSetup\BSBPcbaTestProSetup.vdproj", "{ACCB7014-D7F4-4E2C-94C7-D025D5539D76}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TestSystemSteup", "TestSystemSteup\TestSystemSteup.vdproj", "{2552D9E2-4658-4A45-9554-EEA7D1117A8D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D156351B-1249-4A14-A701-A2E6FA992867}.Debug|x86.ActiveCfg = Debug|x86
+		{D156351B-1249-4A14-A701-A2E6FA992867}.Debug|x86.Build.0 = Debug|x86
+		{D156351B-1249-4A14-A701-A2E6FA992867}.Release|x86.ActiveCfg = Release|x86
+		{D156351B-1249-4A14-A701-A2E6FA992867}.Release|x86.Build.0 = Release|x86
+		{ACCB7014-D7F4-4E2C-94C7-D025D5539D76}.Debug|x86.ActiveCfg = Debug
+		{ACCB7014-D7F4-4E2C-94C7-D025D5539D76}.Release|x86.ActiveCfg = Release
+		{2552D9E2-4658-4A45-9554-EEA7D1117A8D}.Debug|x86.ActiveCfg = Debug
+		{2552D9E2-4658-4A45-9554-EEA7D1117A8D}.Release|x86.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6CA2BE4A-268B-45DB-9F7C-F00C0DD34430}
+	EndGlobalSection
+EndGlobal

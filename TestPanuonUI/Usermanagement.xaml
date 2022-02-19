@@ -1,0 +1,87 @@
+﻿<pu:WindowX x:Class="BsbPcbaTestSpace.Usermanagement"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+        xmlns:local="clr-namespace:BsbPcbaTestSpace"
+        mc:Ignorable="d"
+        Title="用户管理" Height="600" Width="800" Icon="Icon/usermanage.png" ResizeMode="NoResize" Loaded="WindowX_Loaded" Activated="WindowX_Activated">
+    <Window.Resources>
+    <Style x:Key="UserInfoStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Grid Height="50" x:Name="grid">
+                        <!--
+                        <Border Background="{Binding UserBackground}" Width="40" Height="40" CornerRadius="4" HorizontalAlignment="Left" 
+                               Visibility="Hidden" Margin="5 0 0 0">
+                            <TextBlock Text="{Binding Header}" FontSize="23" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        -->
+                            <Image Width="40" Height="40" Margin=" 5 0 0 0" Source="{Binding ShowFaceImage}" HorizontalAlignment="Left"></Image>
+                            <TextBlock  Margin="55 7 0 0" FontSize="13">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat=" {0}({1})">
+                                        <Binding Path="User" />
+                                        <Binding Path="Online" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <TextBlock Text="{Binding Position}" Foreground="#808080" Margin="55 30 0 0"/>
+                            <TextBlock Text="{Binding Own}" Foreground="#808080" Margin="200 15 0 0"></TextBlock>
+                            <TextBlock Text="移除" Foreground="#FF43A00D" HorizontalAlignment="Right"
+                                   VerticalAlignment="Center" Margin="0 0 5 0" Cursor="Hand" ToolTip="移除该用户" MouseLeftButtonUp="TextBlock_MouseLeftButtonUp"/>
+                        </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="grid" Property="Background" Value="#fceeb9"/>
+                        </Trigger>
+                        <Trigger Property="Selector.IsSelected" Value="true">
+                            <Setter TargetName="grid" Property="Background" Value="#fae388"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="401*"/>
+            <ColumnDefinition Width="401*"/>
+        </Grid.ColumnDefinitions>
+        <Canvas Grid.Column="0" Grid.Row="0" Name="userInfoCanvas">
+            <pu:TextBlockX MatchText="{Binding Position}" Text="{Binding Position,StringFormat= {}{0}账户}" MatchedForeground="#FF43A00D" Foreground="Gray" Height="40" 
+                           Width="200" Canvas.Left="20" Canvas.Top="20" FontSize="25"></pu:TextBlockX>
+            <Image Height="80" Width="80" Source="{Binding ShowFaceImage}" Canvas.Left="10" Canvas.Top="80"></Image>
+            <Label Content="{Binding User}" Height="40" Canvas.Left="100" FontSize="20" Canvas.Top="100" ></Label>
+            <Label Content="添加账户..." Height="40" ToolTip="单击添加账户" Canvas.Left="20" Foreground="#FF88DDF5" FontSize="15" Canvas.Top="200" Cursor="Hand" 
+                   MouseLeftButtonUp="Label_MouseLeftButtonUp" Name="addUserLable"></Label>
+        </Canvas>
+        <Canvas Grid.Column="1" Grid.Row="0">
+            <Label Content="所有账户" Height="40" Canvas.Left="20" Foreground="Black" FontSize="25" Canvas.Top="20" ></Label>
+            <pu:Loading Name="openAdduserWinLoad" Width="30" Height="30" IsRunning="False" Canvas.Left="140" Canvas.Top="26"></pu:Loading>
+            <ListBox BorderThickness="1" ItemContainerStyle="{StaticResource UserInfoStyle}" x:Name="UserInfoList" BorderBrush="#eaeaeb"
+                    Canvas.Left="0" Canvas.Top="70" Background="Transparent" Width="386" Height="450"  Margin="5 5 0 0" MouseLeftButtonUp="UserInfoList_MouseLeftButtonUp" >
+                <ListBox.Style>
+                    <Style TargetType="ListBox">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBox">
+                                    <Border x:Name="Bd"  BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                                            Padding="0">
+                                        <ScrollViewer Focusable="False">
+                                            <ItemsPresenter />
+                                        </ScrollViewer>
+                                    </Border>
+
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.Style>
+            </ListBox>
+        </Canvas>
+    </Grid>
+</pu:WindowX>

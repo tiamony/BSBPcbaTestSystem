@@ -1,0 +1,363 @@
+﻿<pu:WindowX
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+        xmlns:local="clr-namespace:BsbPcbaTestSpace"
+        xmlns:View="clr-namespace:Utility.Tool.Controls.View;assembly=Utility.Tool.Controls" x:Class="BsbPcbaTestSpace.QueryDataWin"
+        mc:Ignorable="d"
+        Title="数据库查询" Height="800" Width="1500" WindowState="Maximized" Icon="Icon/sqlquery.png" Loaded="WindowX_Loaded">
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <local:ColorConverter x:Key="DataColorConverterStyle"/>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="113*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="447*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Canvas Name="toolDock" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Horizontal" Margin="45 0 0 0">
+                <TextBox Name="whereTextBox" Width="200" Height="30" pu:TextBoxHelper.Watermark="请输入搜索条件..." pu:TextBoxHelper.CornerRadius="5"
+                         Margin="8 0 0 0" GotFocus="WhereTextBox_GotFocus" LostFocus="WhereTextBox_LostFocus"/>
+                <ComboBox x:Name="whereTypeCombox" Height="30" Width="150"  pu:ComboBoxHelper.CornerRadius="5"
+                      pu:ComboBoxHelper.BindToEnum="{x:Static local:SqlItemType.产品条码}"
+                      SelectionChanged="WhereTypeCombox_SelectionChanged" Margin="8 0 0 0" />
+                
+                <Button Name="sreachBtn" Width="125" Height="30" pu:ButtonHelper.ButtonStyle="Outline" pu:ButtonHelper.CornerRadius="5" Content="查询" 
+                        pu:ButtonHelper.Icon="Icon/query.png" Margin="5 0 0 0" pu:ButtonHelper.ClickCoverOpacity="0.5"
+                        pu:ButtonHelper.IsWaiting="{Binding IsSerachLoading}" pu:ButtonHelper.WaitingContent="正在查询..." 
+                        pu:ButtonHelper.HoverBrush="Green" Click="Button_Click"/>
+            </StackPanel>
+            <Button Content="删除" Width="100" Height="30" pu:ButtonHelper.ButtonStyle="Outline" pu:ButtonHelper.CornerRadius="5" 
+                    Canvas.Right="140" pu:ButtonHelper.Icon="Icon/deletedata.png" pu:ButtonHelper.ClickCoverOpacity="0.5"
+                    pu:ButtonHelper.HoverBrush="Red" Click="Button_Click_3" Name="deleteDataBtn"></Button>
+            <Button Content="导出" Width="120" Height="30" pu:ButtonHelper.ButtonStyle="Outline" pu:ButtonHelper.CornerRadius="5" 
+                    Canvas.Right="10" pu:ButtonHelper.Icon="Icon/popdata.png" pu:ButtonHelper.ClickCoverOpacity="0.5"
+                    pu:ButtonHelper.IsWaiting="{Binding IsPopDataLoading}" pu:ButtonHelper.WaitingContent="正在导出..."
+                    pu:ButtonHelper.HoverBrush="Gold" Click="Button_Click_4"></Button>
+            <Button Content="全选" Width="100" Height="30" pu:ButtonHelper.ButtonStyle="Outline" pu:ButtonHelper.CornerRadius="5" 
+                    Canvas.Right="255" pu:ButtonHelper.Icon="Icon/selectall.png" pu:ButtonHelper.ClickCoverOpacity="0.5"
+                    pu:ButtonHelper.HoverBrush="Green" Click="Button_Click_2" Name="selectAllBtn"></Button>
+            <Button Content="取消全选" Width="110" Height="30" pu:ButtonHelper.ButtonStyle="Outline" pu:ButtonHelper.CornerRadius="5" 
+                    Canvas.Right="380" pu:ButtonHelper.Icon="Icon/cancelselect.png" pu:ButtonHelper.ClickCoverOpacity="0.5"
+                    Name="cancelSelectAllBtn" Click="Button_Click_1"></Button>
+        </Canvas>
+        <Canvas Grid.Column="0" Grid.Row="1" Grid.RowSpan="2">
+            <Image Width="30" Height="30" Source="Icon/datetime.png" Canvas.Right="75" Canvas.Top="14"></Image>
+            <Label Width="75" Height="30" Content="测试日期：" Canvas.Right="0" Margin="0 16 0 0" />
+        </Canvas>
+        <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Orientation="Horizontal" Margin="0 0 0 0">
+            <Label Width="85" Content="起始日期：" Margin="0 14 0 0" FontSize="15" ></Label>
+            <View:DateTimePicker  Name="startTime"  DateTime="2021/08/19 17:00:00" Height="30" Margin="5,0,0,0" Width="150" FontSize="12"/>
+            <Label Content="----" Margin="5 15 0 0"></Label>
+            <Label Width="85" Content="结束日期：" Margin="0 14 0 0" FontSize="15"></Label>
+            <View:DateTimePicker Name="endTime" DateTime="2021/08/19 17:00:00" Height="30" Margin="5,0,0,0"  Width="150" FontSize="12"/>
+        </StackPanel>
+        <Canvas Grid.Column="0" Grid.Row="3">
+            <Image Width="30" Height="30" Source="Icon/companyName.png" Canvas.Right="75" Canvas.Top="-3"></Image>
+            <Label Width="77" Height="30" Content="公司名称：" Canvas.Right="0" />
+        </Canvas>
+        <Border Grid.RowSpan="2" Grid.Column="1" Grid.Row="3" BorderThickness="0">
+            <ListBox x:Name="comanpyNameList" SelectedIndex="0" SelectionChanged="ComanpyNameList_SelectionChanged" BorderThickness="0">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding company}" Margin="10 5"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+        <Canvas Grid.Column="0" Grid.Row="5">
+            <Image Width="30" Height="30" Source="Icon/productName.png" Canvas.Right="75" Canvas.Top="-2"></Image>
+            <Label Width="77" Height="30" Content="产品名称：" Canvas.Right="0"/>
+        </Canvas>
+        <Border Grid.RowSpan="2" Grid.Column="1" Grid.Row="5">
+            <ListBox x:Name="productNameList" SelectedIndex="0" SelectionChanged="ProductNameList_SelectionChanged" BorderThickness="0">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding namedescribe}" Margin="10 5"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+        <Canvas Grid.Column="0" Grid.Row="7">
+            <Image Width="30" Height="30" Source="Icon/checkresult.png" Canvas.Right="75" Canvas.Top="-3"></Image>
+            <Label Width="77" Height="30" Content="测试结果：" Canvas.Right="0"/>
+        </Canvas>
+        <Border  Grid.Column="1" Grid.Row="7">
+            <ListBox x:Name="resultTypeList" SelectedIndex="0" SelectionChanged="ResultTypeList_SelectionChanged" BorderThickness="0">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding resultDescribe}" Margin="10 5"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+        <Border Grid.Column="0" Grid.Row="8" Visibility="Visible" Margin="0,0,0,6" Grid.ColumnSpan="2" >
+            <DataGrid x:Name="showSqlData" SelectionMode="Single" Background="White" SelectionUnit="FullRow" AutoGenerateColumns="False"
+                       IsReadOnly="True" CanUserSortColumns="False" CanUserResizeRows="False" pu:DataGridHelper.SelectedBackground="Gray"
+                      pu:DataGridHelper.HeaderBackground="White" CanUserReorderColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn  Header="选择" Width="1.5*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding isSelected, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="序号" Width="1.5*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding id}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="治具编号" Width="2.5*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding testfixtureid}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="公司名称" Width="2.5*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding companyName}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="产品名称" Width="4*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding testProductName}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="测试员" Width="2.5*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding conner}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="条码" Width="4*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding barcode}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="项目序号" Width="2.2*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding itemID}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="是否测试" Width="2.2*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding isCheckedBoxTrue}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn  Header="项目名称" Width="4*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding testName}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="测试内容" Width="4*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding testBody}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn  Header="上限" Width="2*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding testTopLimit}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="下限" Width="2*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding testFloor}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="测试值" Width="2.5*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding testValue}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="测试结果" Width="2.5*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Foreground="{Binding testResult, Converter={StaticResource DataColorConverterStyle}}" Text="{Binding testResult}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="备注" Width="5*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding remarks}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Header="测试日期" Width="4.5*">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding testdate}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </Border>
+        <StatusBar Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" Name="statusBar" Background="#FF007ACC" Padding="2">
+            <StatusBarItem HorizontalAlignment="Left">
+                <TextBlock Name="statusInfoTextBlock" Foreground="White">请输入查询条件！</TextBlock>
+            </StatusBarItem>
+            <StatusBarItem>
+                <ProgressBar Name="progressBar" Foreground="White" BorderBrush="White" Background="{Binding ElementName=statusBar, Path=Background}" 
+                             Visibility="Collapsed" Width="150" Height="10" Value="10" SmallChange="1" IsIndeterminate="True" Margin="10,0,0,0"></ProgressBar>
+            </StatusBarItem>
+            <StatusBarItem Margin="0,0,0,0" Name="dataRecvStatusBarItem" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse Height="5" Width="5" Fill="White" Margin="0,0,5,0"></Ellipse>
+                    <Ellipse Height="5" Width="5" Fill="White" Margin="0,0,5,0"></Ellipse>
+                    <Ellipse Height="5" Width="5" Fill="White" Margin="0,0,5,0"></Ellipse>
+                    <Ellipse Height="5" Width="5" Fill="White" Margin="0,0,5,0"></Ellipse>
+                    <Ellipse Height="5" Width="5" Fill="White" Margin="0,0,5,0"></Ellipse>
+                    <Ellipse Height="5" Width="5" Fill="White"></Ellipse>
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock Name="timeDateTextBlock" Foreground="White"></TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</pu:WindowX>
